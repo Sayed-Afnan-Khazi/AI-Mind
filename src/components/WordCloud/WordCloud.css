@@ -1,6 +1,9 @@
 .input-img {
 	width: 40vw;
 	height: auto;
+/*	max-height: 65vh;*/
+	object-fit: cover;
+	padding-bottom: 10px;
 }
 
 .full-height {
@@ -12,6 +15,9 @@
 .word-cloud-img {
 	width: 40vw;
 	height: auto;
+/*	max-height: 65vh;*/
+	object-fit: cover;
+	padding-bottom: 10px;
 }
 
 .bg-brain {
