@@ -1,3 +1,4 @@
 .tilty {
-	background: linear-gradient(to left,#00fdff,#93ff00);;
+	background: linear-gradient(to bottom,#232323,#444444);
+	z-index:5;
 }

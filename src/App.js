@@ -5,20 +5,45 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import WordCloud from './components/WordCloud/WordCloud';
+import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 
 // Particles
 import ParticlesWrapper from './components/ParticlesWrapper/ParticlesWrapper';
+
+const initialState = {
+    input: '',
+    imageUrl: '',
+    wordCloudUrl: '',
+    route: 'signin', // Initially should go to the signin page
+    isSignedIn: false,
+    user: {
+        id:'',
+        name:'',
+        email:'',
+        entries:0,
+        created: ''
+    }
+}
 
 
 class App extends Component {
 
     constructor() {
         super();
-        this.state = {
-            input: '',
-            imageUrl: '',
-            wordCloudUrl: ''
-        }   
+        this.state = initialState;
+    }
+
+    loadUser = (data) => {
+        this.setState({ 
+            user: {
+                id: data.id,
+                name:data.name,
+                email:data.email,
+                entries:data.entries,
+                created: data.created
+            }
+        });
     }
 
     // Getting the value of the image link field
@@ -119,19 +144,52 @@ class App extends Component {
         fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
             .then(response => response.json())
             .then(result => this.makeWordCloud(this.createWordCloudString(result.outputs[0].data.concepts)))
+            .then(done => {
+                fetch('https://smartbrain-api-a9li.onrender.com/image',{
+                        method:'put',
+                        headers:{'Content-Type':'application/json'},
+                        body: JSON.stringify({
+                            id:this.state.user.id
+                        })
+                    })
+                        .then(data=>data.json())
+                        .then(entries=>this.setState(Object.assign(this.state.user,{entries:entries}))) // Changing a property of an object without re/over-writing the whole object.
+                        .catch(err=>console.log);
+            })
             .catch(error => console.log('API Error', error));
     }
 
+    // To go from signin -> app or app -> signin
+    onRouteChange = (route) => {
+        if (route==='signout') {
+            this.setState(initialState);
+        } else if (route==='home'){
+            this.setState({isSignedIn:true});
+        }
+
+        this.setState({ route: route});
+    }
+
     render() {
+        const { isSignedIn, route } = this.state;
         return (
             <div className="App">
                 {/* Had to use a wrapper since we can't init the particles engine (a "hook") in a class component*/}
                 <ParticlesWrapper className='particles' />
-                <Navigation />
-                <Logo />
-                <Rank />
-                <ImageLinkForm changeFunction={this.onInputChange} submitFunction={this.onButtonSubmit}/>
-                <WordCloud imageUrl={this.state.imageUrl} wordCloudUrl={this.state.wordCloudUrl}/>
+                <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+                { route === 'home'
+                ? <div>
+                    <Logo />
+                    <Rank user={this.state.user}/>
+                    <ImageLinkForm changeFunction={this.onInputChange} submitFunction={this.onButtonSubmit}/>
+                    <WordCloud imageUrl={this.state.imageUrl} wordCloudUrl={this.state.wordCloudUrl}/>
+                  </div>
+                : (
+                    this.state.route === 'signin'
+                    ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+                    : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
+                )
+                }
             </div>
         );
     }

@@ -4,7 +4,7 @@ import './ImageLinkForm.css'
 const ImageLinkForm = ( { changeFunction, submitFunction } ) => {
 	return (
 		<div className='imageLinkForm'>
-			<p className='f3'>
+			<p className='f4 near-white'>
 				{"This AI will show you what its mind looks like when you show it an image. Give it a try."}
 			</p>
 			<div className='center'>

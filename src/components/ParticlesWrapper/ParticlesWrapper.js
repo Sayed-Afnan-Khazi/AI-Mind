@@ -31,10 +31,10 @@ const particlesOptions = {
                 },
                 particles: {
                     color: {
-                        value: "#000000",
+                        value: "#32a4a8",
                     },
                     links: {
-                        color: "#010101",
+                        color: "#32a8a4",
                         distance: 150,
                         enable: true,
                         opacity: 0.5,
@@ -55,7 +55,7 @@ const particlesOptions = {
                             enable: true,
                             area: 800,
                         },
-                        value: 80,
+                        value: 70,
                     },
                     opacity: {
                         value: 0.5,
