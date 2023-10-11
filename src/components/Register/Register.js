@@ -27,7 +27,7 @@ class Register extends React.Component {
 			this.setState({missingFields:true});
 			return
 		}
-		fetch('http://localhost:3000/register',{
+		fetch('https://ai-mind-api.onrender.com/register',{
 			method: 'post',
 			headers: {'Content-Type':'application/json'},
 			body: JSON.stringify({

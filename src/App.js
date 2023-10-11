@@ -101,7 +101,7 @@ class App extends Component {
         }); // imageUrl set to the current input in the field
 
         
-        fetch('http://localhost:3000/clarifai',{
+        fetch('https://ai-mind-api.onrender.com/clarifai',{
             method:'post',
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
@@ -110,7 +110,7 @@ class App extends Component {
         }).then(response => response.json())
             .then(result => this.makeWordCloud(this.createWordCloudString(result.outputs[0].data.concepts)))
             .then(done => {
-                fetch('http://localhost:3000/image',{
+                fetch('https://ai-mind-api.onrender.com/image',{
                         method:'put',
                         headers:{'Content-Type':'application/json'},
                         body: JSON.stringify({
