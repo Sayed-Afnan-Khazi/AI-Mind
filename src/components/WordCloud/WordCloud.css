@@ -1,0 +1,17 @@
+.input-img {
+	width: 40vw;
+	height: auto;
+}
+
+.word-cloud-img {
+	width: 40vw;
+	height: auto;
+}
+
+.bg-brain {
+	background: url('../../../public/bg-brain.jpeg') no-repeat; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;;
+}
